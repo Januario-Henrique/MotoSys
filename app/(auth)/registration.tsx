@@ -224,7 +224,7 @@ export default function RegistrationScreen() {
             <Text style={styles.socialButtonText}>Sign up with Gmail</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.socialButton}>
-            <Ionicons name="logo-facebook" size={22} color="#1877F2" />
+            <Ionicons name="logo-facebook" size={22} color="#10b987" />
             <Text style={styles.socialButtonText}>Sign up with Facebook</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.socialButton}>
@@ -273,7 +273,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
     backgroundColor: '#f9f9f9',
   },
-  genderOptionActive: { borderColor: '#6C63FF', backgroundColor: '#6C63FF' },
+  genderOptionActive: { borderColor: '#10b987', backgroundColor: '#10b987' },
   genderText: { color: '#333', fontWeight: '500' },
   genderTextActive: { color: '#fff' },
   termsContainer: { flexDirection: 'row', alignItems: 'center', marginVertical: 16 },
@@ -287,11 +287,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  checkboxActive: { backgroundColor: '#6C63FF', borderColor: '#6C63FF' },
+  checkboxActive: { backgroundColor: '#10b987', borderColor: '#10b987' },
   termsText: { flex: 1, fontSize: 14, color: '#555', lineHeight: 20 },
-  linkText: { color: '#6C63FF', fontWeight: '500' },
+  linkText: { color: '#10b987', fontWeight: '500' },
   signUpButton: {
-    backgroundColor: '#6C63FF',
+    backgroundColor: '#10b987',
     borderRadius: 30,
     paddingVertical: 16,
     alignItems: 'center',
@@ -317,5 +317,5 @@ const styles = StyleSheet.create({
   socialButtonText: { fontSize: 16, fontWeight: '500', color: '#333' },
   footer: { flexDirection: 'row', justifyContent: 'center', marginTop: 24, marginBottom: 40 },
   footerText: { fontSize: 15, color: '#555' },
-  footerLink: { fontSize: 15, fontWeight: '600', color: '#6C63FF' },
+  footerLink: { fontSize: 15, fontWeight: '600', color: '#10b987' },
 });
