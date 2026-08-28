@@ -19,21 +19,21 @@ const { width, height } = Dimensions.get("window");
 const slides = [
   {
     id: "1",
-    image: require("../../assets/images/home1.png"),
+    image: require("../assets/images/home1.png"),
     title: "Anywhere you are",
     description:
       "Find and book a motorcycle driver near you quickly, easily and conveniently.",
   },
   {
     id: "2",
-    image: require("../../assets/images/home2.png"),
+    image: require("../assets/images/home2.png"),
     title: "Reach your destination",
     description:
       "Enter your destination and get a clear fare based on the distance of your journey.",
   },
   {
     id: "3",
-    image: require("../../assets/images/home3.png"),
+    image: require("../assets/images/home3.png"),
     title: "Manage your journeys",
     description:
       "Track your trips, earnings, fuel usage and motorcycle expenses all in one place.",
