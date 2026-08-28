@@ -224,7 +224,7 @@ export default function RegistrationScreen() {
             <Text style={styles.socialButtonText}>Sign up with Gmail</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.socialButton}>
-            <Ionicons name="logo-facebook" size={22} color="#10b987" />
+            <Ionicons name="logo-facebook" size={22} color="#1877F2" />
             <Text style={styles.socialButtonText}>Sign up with Facebook</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.socialButton}>
