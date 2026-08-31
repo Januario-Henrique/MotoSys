@@ -1,6 +1,4 @@
-
 import React from "react";
-
 import {
   Image,
   SafeAreaView,
@@ -10,7 +8,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-
 import {
   useFonts,
   Poppins_400Regular,
@@ -18,7 +15,6 @@ import {
   Poppins_600SemiBold,
   Poppins_700Bold,
 } from "@expo-google-fonts/poppins";
-
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 
@@ -37,7 +33,7 @@ const motos = [
   },
 ];
 
-export default function MotoList() {
+export default function MotoRides() {
   const [fontsLoaded] = useFonts({
     Poppins_400Regular,
     Poppins_500Medium,
@@ -48,11 +44,6 @@ export default function MotoList() {
   if (!fontsLoaded) {
     return null;
   }
-
-  // Navigate to MotoBook
-  const handleViewMotoList = () => {
-    router.push("/transport/motobook");
-  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -73,16 +64,13 @@ export default function MotoList() {
             size={20}
             color="#666666"
           />
-
-          <Text style={styles.backText}>
-            Back
-          </Text>
+          <Text style={styles.backText}>Back</Text>
         </TouchableOpacity>
 
         {/* Heading */}
         <View style={styles.headingContainer}>
           <Text style={styles.title}>
-            Available motos
+            Available motos for ride
           </Text>
 
           <Text style={styles.subtitle}>
@@ -90,12 +78,9 @@ export default function MotoList() {
           </Text>
         </View>
 
-        {/* Moto Cards */}
+        {/* Moto cards */}
         {motos.map((moto, index) => (
-          <View
-            style={styles.card}
-            key={index}
-          >
+          <View style={styles.card} key={index}>
             {/* Top section */}
             <View style={styles.cardTop}>
               <View style={styles.infoContainer}>
@@ -108,24 +93,19 @@ export default function MotoList() {
                     {moto.type}
                   </Text>
 
-                  <Text style={styles.separator}>
-                    |
-                  </Text>
+                  <Text style={styles.separator}>|</Text>
 
                   <Text style={styles.detailText}>
                     {moto.seats}
                   </Text>
 
-                  <Text style={styles.separator}>
-                    |
-                  </Text>
+                  <Text style={styles.separator}>|</Text>
 
                   <Text style={styles.detailText}>
                     {moto.fuel}
                   </Text>
                 </View>
 
-                {/* Location */}
                 <View style={styles.locationRow}>
                   <Ionicons
                     name="location-sharp"
@@ -139,7 +119,7 @@ export default function MotoList() {
                 </View>
               </View>
 
-              {/* Moto Image */}
+              {/* Moto image */}
               <View style={styles.imageWrapper}>
                 <Image
                   source={require("../../assets/images/sipiro.png")}
@@ -149,16 +129,34 @@ export default function MotoList() {
               </View>
             </View>
 
-            {/* View Moto List Button */}
-            <TouchableOpacity
-              style={styles.viewButton}
-              activeOpacity={0.8}
-              onPress={handleViewMotoList}
-            >
-              <Text style={styles.viewButtonText}>
-                View moto list
-              </Text>
-            </TouchableOpacity>
+            {/* Booking buttons */}
+            <View style={styles.bookingButtons}>
+              {/* Book Later */}
+              <TouchableOpacity
+                style={styles.bookLaterButton}
+                activeOpacity={0.8}
+                onPress={() => {
+                  // Add Book Later navigation here
+                }}
+              >
+                <Text style={styles.bookLaterText}>
+                  Book Later
+                </Text>
+              </TouchableOpacity>
+
+              {/* Book Now */}
+              <TouchableOpacity
+                style={styles.bookNowButton}
+                activeOpacity={0.8}
+                onPress={() => {
+                  // Add Book Now navigation here
+                }}
+              >
+                <Text style={styles.bookNowText}>
+                  Book Now
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         ))}
 
@@ -298,22 +296,45 @@ const styles = StyleSheet.create({
     height: 58,
   },
 
-  /* Button */
-  viewButton: {
+  /* Booking buttons */
+  bookingButtons: {
+    flexDirection: "row",
+    gap: 8,
+    marginTop: 8,
+  },
+
+  bookLaterButton: {
+    flex: 1,
     height: 40,
     borderWidth: 1,
     borderColor: "#18B987",
     borderRadius: 6,
-    backgroundColor: "#E8F8F2",
+    backgroundColor: "#FFFFFF",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 8,
   },
 
-  viewButtonText: {
+  bookLaterText: {
     fontFamily: "Poppins_600SemiBold",
     fontSize: 12,
     color: "#009B6B",
+  },
+
+  bookNowButton: {
+    flex: 1,
+    height: 40,
+    borderWidth: 1,
+    borderColor: "#18B987",
+    borderRadius: 6,
+    backgroundColor: "#18B987",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  bookNowText: {
+    fontFamily: "Poppins_600SemiBold",
+    fontSize: 12,
+    color: "#FFFFFF",
   },
 
   bottomSpace: {
