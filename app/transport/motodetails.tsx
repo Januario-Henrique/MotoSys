@@ -1,6 +1,4 @@
-
-import React from "react";
-
+import React, { useState } from "react";
 import {
   Image,
   SafeAreaView,
@@ -11,10 +9,8 @@ import {
   View,
   Dimensions,
 } from "react-native";
-
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-
 import {
   useFonts,
   Poppins_400Regular,
@@ -37,6 +33,16 @@ export default function MotoDetails() {
     Poppins_700Bold,
   });
 
+  // Motorcycle images
+  const motoImages = [
+    require("../../assets/images/sipiro.png"),
+    // Add more images here later:
+    require("../../assets/images/manual.png"),
+    require("../../assets/images/sipiro.png"),
+  ];
+
+  const [currentImage, setCurrentImage] = useState(0);
+
   if (!fontsLoaded) {
     return null;
   }
@@ -49,6 +55,20 @@ export default function MotoDetails() {
 
   const handleRideNow = () => {
     router.push("/transport/motorent");
+  };
+
+  // Go to previous image
+  const handlePrevious = () => {
+    setCurrentImage((prev) =>
+      prev === 0 ? motoImages.length - 1 : prev - 1
+    );
+  };
+
+  // Go to next image
+  const handleNext = () => {
+    setCurrentImage((prev) =>
+      prev === motoImages.length - 1 ? 0 : prev + 1
+    );
   };
 
   return (
@@ -70,9 +90,7 @@ export default function MotoDetails() {
             color="#444444"
           />
 
-          <Text style={styles.backText}>
-            Back
-          </Text>
+          <Text style={styles.backText}>Back</Text>
         </TouchableOpacity>
 
         {/* Title */}
@@ -98,10 +116,13 @@ export default function MotoDetails() {
           </View>
         </View>
 
-        {/* Moto image */}
+        {/* Motorcycle Image Slider */}
         <View style={styles.carImageContainer}>
+
+          {/* Previous Button */}
           <TouchableOpacity
             style={styles.imageArrow}
+            onPress={handlePrevious}
             activeOpacity={0.7}
           >
             <Ionicons
@@ -111,14 +132,17 @@ export default function MotoDetails() {
             />
           </TouchableOpacity>
 
+          {/* Current Image */}
           <Image
-            source={require("../../assets/images/sipiro.png")}
+            source={motoImages[currentImage]}
             style={styles.carImage}
             resizeMode="contain"
           />
 
+          {/* Next Button */}
           <TouchableOpacity
             style={styles.imageArrow}
+            onPress={handleNext}
             activeOpacity={0.7}
           >
             <Ionicons
@@ -127,6 +151,19 @@ export default function MotoDetails() {
               color="#444444"
             />
           </TouchableOpacity>
+        </View>
+
+        {/* Image Indicator */}
+        <View style={styles.dotsContainer}>
+          {motoImages.map((_, index) => (
+            <View
+              key={index}
+              style={[
+                styles.dot,
+                currentImage === index && styles.activeDot,
+              ]}
+            />
+          ))}
         </View>
 
         {/* Specifications */}
@@ -361,6 +398,27 @@ const styles = StyleSheet.create({
     height: 190,
   },
 
+  /* Slider dots */
+  dotsContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 2,
+  },
+
+  dot: {
+    width: 7,
+    height: 7,
+    borderRadius: 4,
+    backgroundColor: "#D4D4D4",
+    marginHorizontal: 4,
+  },
+
+  activeDot: {
+    width: 18,
+    backgroundColor: GREEN,
+  },
+
   sectionTitle: {
     fontFamily: "Poppins_600SemiBold",
     fontSize: 19,
@@ -470,4 +528,3 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-
