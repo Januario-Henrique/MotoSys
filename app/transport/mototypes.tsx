@@ -48,12 +48,15 @@ export default function TransportType() {
     return null;
   }
 
-  const handleContinue = () => {
-    if (!selected) return;
+  // Go to MotoList after selecting a transport
+  const handleTransportSelect = (type: string) => {
+    setSelected(type);
 
     router.push({
-      pathname: "/transport/details",
-      params: { type: selected },
+      pathname: "/transport/motolist",
+      params: {
+        type: type,
+      },
     });
   };
 
@@ -64,19 +67,30 @@ export default function TransportType() {
         <TouchableOpacity
           style={styles.backButton}
           onPress={() => router.back()}
+          activeOpacity={0.7}
         >
-          <Ionicons name="chevron-back" size={22} color="#555" />
+          <Ionicons
+            name="chevron-back"
+            size={22}
+            color="#555"
+          />
 
-          <Text style={styles.backText}>Back</Text>
+          <Text style={styles.backText}>
+            Back
+          </Text>
         </TouchableOpacity>
 
-        <Text style={styles.headerTitle}>Select transport</Text>
+        <Text style={styles.headerTitle}>
+          Select transport
+        </Text>
 
         <View style={styles.headerSpacer} />
       </View>
 
       {/* Title */}
-      <Text style={styles.title}>Select your transport</Text>
+      <Text style={styles.title}>
+        Select your transport
+      </Text>
 
       {/* Transport Cards */}
       <View style={styles.grid}>
@@ -91,7 +105,9 @@ export default function TransportType() {
                 isSelected && styles.selectedCard,
               ]}
               activeOpacity={0.8}
-              onPress={() => setSelected(transport.id)}
+              onPress={() =>
+                handleTransportSelect(transport.id)
+              }
             >
               <Image
                 source={transport.image}

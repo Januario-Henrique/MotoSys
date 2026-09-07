@@ -1,4 +1,5 @@
 import { Stack } from "expo-router";
+import { View, StyleSheet } from "react-native";
 
 import {
   useFonts,
@@ -21,10 +22,35 @@ export default function RootLayout() {
   }
 
   return (
-    <Stack
-      screenOptions={{
-        headerShown: false,
-      }}
-    />
+    <View style={styles.container}>
+      {/* ALL SCREENS */}
+      <View style={styles.screenContainer}>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+          }}
+        />
+      </View>
+
+      {/* BOTTOM HORIZONTAL LINE */}
+      <View style={styles.horizontalLine} />
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+  },
+
+  screenContainer: {
+    flex: 1,
+  },
+
+  horizontalLine: {
+    width: "100%",
+    height: 1,
+    backgroundColor: "#000000",
+  },
+});
