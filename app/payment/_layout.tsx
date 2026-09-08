@@ -1,13 +1,18 @@
+
 import { Stack } from "expo-router";
 
 export default function PaymentLayout() {
   return (
-    <Stack>
+    <Stack
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       {/* Payment Process */}
       <Stack.Screen
         name="paymentprocess"
         options={{
-          headerShown: false,
+          presentation: "card",
         }}
       />
 
@@ -15,7 +20,6 @@ export default function PaymentLayout() {
       <Stack.Screen
         name="paymentsuccess"
         options={{
-          headerShown: false,
           presentation: "transparentModal",
           animation: "slide_from_bottom",
           contentStyle: {
@@ -28,7 +32,6 @@ export default function PaymentLayout() {
       <Stack.Screen
         name="paymentcall"
         options={{
-          headerShown: false,
           presentation: "transparentModal",
           animation: "slide_from_bottom",
           contentStyle: {
@@ -41,7 +44,6 @@ export default function PaymentLayout() {
       <Stack.Screen
         name="paymentdecline"
         options={{
-          headerShown: false,
           presentation: "transparentModal",
           animation: "slide_from_bottom",
           contentStyle: {
@@ -54,7 +56,6 @@ export default function PaymentLayout() {
       <Stack.Screen
         name="feedback"
         options={{
-          headerShown: false,
           presentation: "transparentModal",
           animation: "slide_from_bottom",
           contentStyle: {
@@ -65,3 +66,4 @@ export default function PaymentLayout() {
     </Stack>
   );
 }
+

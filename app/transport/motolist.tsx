@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Image,
@@ -20,22 +20,28 @@ import {
 } from "@expo-google-fonts/poppins";
 
 import { Ionicons } from "@expo/vector-icons";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 
-const motos = [
-  {
-    name: "Honda Moto",
-    type: "Manual",
-    seats: "1 passenger",
-    fuel: "Petrol",
-  },
-  {
-    name: "Ampersand Moto",
-    type: "Electric",
-    seats: "1 passenger",
-    fuel: "Electric",
-  },
-];
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
+
+import { db } from "../../firebase/config";
+
+type Moto = {
+  id: string;
+  name: string;
+  type: string;
+  model: string;
+  plateNumber: string;
+  seats: string;
+  pricePerKm: number;
+  status: string;
+  fuel?: string;
+};
 
 export default function MotoList() {
   const [fontsLoaded] = useFonts({
@@ -44,6 +50,61 @@ export default function MotoList() {
     Poppins_600SemiBold,
     Poppins_700Bold,
   });
+
+  // Get the type selected on TransportType page
+  const { type } = useLocalSearchParams<{ type?: string }>();
+
+  const [motos, setMotos] = useState<Moto[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchMotos = async () => {
+      try {
+        setLoading(true);
+        setError("");
+
+        // Get the motos collection
+        const motosCollection = collection(db, "motos");
+
+        // Filter according to the selected transport type
+        //
+        // Electric:
+        // searches type = "electric"
+        //
+        // Petrol:
+        // searches fuel = "petrol"
+        const motosQuery =
+          type === "electric"
+            ? query(
+                motosCollection,
+                where("type", "==", "electric")
+              )
+            : type === "petrol"
+            ? query(
+                motosCollection,
+                where("fuel", "==", "petrol")
+              )
+            : motosCollection;
+
+        const snapshot = await getDocs(motosQuery);
+
+        const motoData: Moto[] = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...(doc.data() as Omit<Moto, "id">),
+        }));
+
+        setMotos(motoData);
+      } catch (err) {
+        console.error("Error fetching motos:", err);
+        setError("Could not load motos.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMotos();
+  }, [type]);
 
   if (!fontsLoaded) {
     return null;
@@ -54,6 +115,28 @@ export default function MotoList() {
     router.push("/transport/motobook");
   };
 
+  // Choose image depending on moto type
+  const getMotoImage = (motoType: string) => {
+    if (motoType === "electric") {
+      return require("../../assets/images/sipiro.png");
+    }
+
+    return require("../../assets/images/manual.png");
+  };
+
+  // Display friendly name
+  const getTypeName = () => {
+    if (type === "electric") {
+      return "Electric motos";
+    }
+
+    if (type === "petrol") {
+      return "Petrol motos";
+    }
+
+    return "Available motos";
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -62,7 +145,7 @@ export default function MotoList() {
         showsVerticalScrollIndicator={false}
         bounces={true}
       >
-        {/* Back */}
+        {/* Back button */}
         <TouchableOpacity
           style={styles.backButton}
           onPress={() => router.back()}
@@ -82,85 +165,109 @@ export default function MotoList() {
         {/* Heading */}
         <View style={styles.headingContainer}>
           <Text style={styles.title}>
-            Available motos
+            {getTypeName()}
           </Text>
 
           <Text style={styles.subtitle}>
-            18 motos found
+            {loading
+              ? "Loading motos..."
+              : error
+              ? error
+              : `${motos.length} moto${
+                  motos.length !== 1 ? "s" : ""
+                } found`}
           </Text>
         </View>
 
-        {/* Moto Cards */}
-        {motos.map((moto, index) => (
-          <View
-            style={styles.card}
-            key={index}
-          >
-            {/* Top section */}
-            <View style={styles.cardTop}>
-              <View style={styles.infoContainer}>
-                <Text style={styles.motoName}>
-                  {moto.name}
-                </Text>
+        {/* Empty state */}
+        {!loading && !error && motos.length === 0 ? (
+          <View style={styles.emptyContainer}>
+            <Ionicons
+              name="bicycle-outline"
+              size={40}
+              color="#B8B8B8"
+            />
 
-                <View style={styles.detailsRow}>
-                  <Text style={styles.detailText}>
-                    {moto.type}
-                  </Text>
-
-                  <Text style={styles.separator}>
-                    |
-                  </Text>
-
-                  <Text style={styles.detailText}>
-                    {moto.seats}
-                  </Text>
-
-                  <Text style={styles.separator}>
-                    |
-                  </Text>
-
-                  <Text style={styles.detailText}>
-                    {moto.fuel}
-                  </Text>
-                </View>
-
-                {/* Location */}
-                <View style={styles.locationRow}>
-                  <Ionicons
-                    name="location-sharp"
-                    size={13}
-                    color="#333333"
-                  />
-
-                  <Text style={styles.locationText}>
-                    800m (5mins away)
-                  </Text>
-                </View>
-              </View>
-
-              {/* Moto Image */}
-              <View style={styles.imageWrapper}>
-                <Image
-                  source={require("../../assets/images/sipiro.png")}
-                  style={styles.motoImage}
-                  resizeMode="contain"
-                />
-              </View>
-            </View>
-
-            {/* View Moto List Button */}
-            <TouchableOpacity
-              style={styles.viewButton}
-              activeOpacity={0.8}
-              onPress={handleViewMotoList}
-            >
-              <Text style={styles.viewButtonText}>
-                View moto list
-              </Text>
-            </TouchableOpacity>
+            <Text style={styles.emptyText}>
+              No {type || ""} motos available.
+            </Text>
           </View>
-        ))}
+        ) : (
+          /* Moto Cards */
+          motos.map((moto) => (
+            <View
+              style={styles.card}
+              key={moto.id}
+            >
+              {/* Top section */}
+              <View style={styles.cardTop}>
+                <View style={styles.infoContainer}>
+
+                  {/* Moto name */}
+                  <Text style={styles.motoName}>
+                    {moto.name}
+                  </Text>
+
+                  {/* Details */}
+                  <View style={styles.detailsRow}>
+                    <Text style={styles.detailText}>
+                      {moto.type}
+                    </Text>
+
+                    <Text style={styles.separator}>
+                      |
+                    </Text>
+
+                    <Text style={styles.detailText}>
+                      {moto.seats}
+                    </Text>
+
+                    <Text style={styles.separator}>
+                      |
+                    </Text>
+
+                    <Text style={styles.detailText}>
+                      {moto.fuel || "Electric"}
+                    </Text>
+                  </View>
+
+                  {/* Location */}
+                  <View style={styles.locationRow}>
+                    <Ionicons
+                      name="location-sharp"
+                      size={13}
+                      color="#333333"
+                    />
+
+                    <Text style={styles.locationText}>
+                      800m (5mins away)
+                    </Text>
+                  </View>
+                </View>
+
+                {/* Moto Image */}
+                <View style={styles.imageWrapper}>
+                  <Image
+                    source={getMotoImage(moto.type)}
+                    style={styles.motoImage}
+                    resizeMode="contain"
+                  />
+                </View>
+              </View>
+
+              {/* View Moto Button */}
+              <TouchableOpacity
+                style={styles.viewButton}
+                activeOpacity={0.8}
+                onPress={handleViewMotoList}
+              >
+                <Text style={styles.viewButtonText}>
+                  View moto list
+                </Text>
+              </TouchableOpacity>
+            </View>
+          ))
+        )}
 
         {/* Bottom spacing */}
         <View style={styles.bottomSpace} />
@@ -314,6 +421,20 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins_600SemiBold",
     fontSize: 12,
     color: "#009B6B",
+  },
+
+  /* Empty state */
+  emptyContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingTop: 60,
+  },
+
+  emptyText: {
+    fontFamily: "Poppins_400Regular",
+    fontSize: 13,
+    color: "#999999",
+    marginTop: 10,
   },
 
   bottomSpace: {
