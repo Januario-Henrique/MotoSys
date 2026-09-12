@@ -1,5 +1,5 @@
-import { Stack } from "expo-router";
-import { View, StyleSheet } from "react-native";
+import { Stack } from 'expo-router';
+import { StyleSheet, View } from 'react-native';
 
 import {
   useFonts,
@@ -7,7 +7,7 @@ import {
   Poppins_500Medium,
   Poppins_600SemiBold,
   Poppins_700Bold,
-} from "@expo-google-fonts/poppins";
+} from '@expo-google-fonts/poppins';
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
@@ -23,16 +23,7 @@ export default function RootLayout() {
 
   return (
     <View style={styles.container}>
-      {/* ALL SCREENS */}
-      <View style={styles.screenContainer}>
-        <Stack
-          screenOptions={{
-            headerShown: false,
-          }}
-        />
-      </View>
-
-      {/* BOTTOM HORIZONTAL LINE */}
+      <Stack screenOptions={{ headerShown: false }} />
       <View style={styles.horizontalLine} />
     </View>
   );
@@ -41,16 +32,14 @@ export default function RootLayout() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: '#FFFFFF',
   },
-
-  screenContainer: {
-    flex: 1,
-  },
-
   horizontalLine: {
-    width: "100%",
+    width: '100%',
     height: 1,
-    backgroundColor: "#000000",
+    backgroundColor: '#000000',
   },
 });
+
+
+

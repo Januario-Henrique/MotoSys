@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Image,
   Dimensions,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -264,6 +263,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 65,
     borderBottomRightRadius: 65,
 
+    boxShadow: "0px 3px 8px rgba(0, 0, 0, 0.12)",
     shadowColor: "#000",
     shadowOffset: {
       width: 3,

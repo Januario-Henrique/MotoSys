@@ -13,6 +13,7 @@ import {
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
 
 const { width, height } = Dimensions.get("window");
 
@@ -59,9 +60,10 @@ export default function Home() {
         index: currentIndex + 1,
         animated: true,
       });
-    } else {
-      console.log("Get Started");
+      return;
     }
+
+    router.push("/auth/welcomePage");
   };
 
   const handleSkip = () => {
