@@ -11,55 +11,49 @@ import { useRouter } from 'expo-router';
 import * as Location from 'expo-location';
 import { Ionicons } from '@expo/vector-icons';
 
-// Import your CustomButton component
 import CustomButton from '../components/CustomButton';
 
 export default function LocationPage() {
   const router = useRouter();
 
-  // Function to request real location permission
   const handleAllowLocation = async () => {
-    // 1. Request permission from the user
+    // 1. Request permission
     let { status } = await Location.requestForegroundPermissionsAsync();
 
+    // 2. If denied, show alert and STOP (do not navigate)
     if (status !== 'granted') {
       Alert.alert(
         'Permission Denied',
         'We need your location to show available vehicles near you.',
         [{ text: 'OK' }]
       );
-      return;
+      return; 
     }
 
-    // 2. If granted, you can get the current location here if needed:
+    // 3. If granted, get location (optional)
     // let location = await Location.getCurrentPositionAsync({});
     // console.log(location);
 
-    // 3. Redirect to the Welcome screen
-    router.replace('/'); 
+    // 4. Navigate to Welcome Page 👈 ALTERADO
+    router.replace('/auth/welcomePage');
   };
 
   const handleSkip = () => {
-    // User skipped, also goes to Welcome screen
-    router.replace('/');
+    // Skip also goes to Welcome Page 👈 ALTERADO
+    router.replace('/auth/welcomePage');
   };
 
   return (
     <View style={styles.container}>
-      {/* Map Background */}
       <ImageBackground 
         source={require('../assets/images/map-background.jpeg')} 
         style={styles.mapBackground}
         resizeMode="cover"
       >
-        {/* Light dark overlay for contrast (optional) */}
         <View style={styles.overlay} />
       </ImageBackground>
 
-      {/* White Card (Bottom Sheet) */}
       <View style={styles.bottomSheet}>
-        
-        {/* Central Icon */}
         <View style={styles.iconContainer}>
           <View style={styles.iconCircleOuter}>
             <View style={styles.iconCircleInner}>
@@ -68,13 +62,11 @@ export default function LocationPage() {
           </View>
         </View>
 
-        {/* Texts */}
         <Text style={styles.title}>Enable your location</Text>
         <Text style={styles.subtitle}>
           Choose your location to start finding requests around you
         </Text>
 
-        {/* Buttons */}
         <View style={styles.buttonContainer}>
           <CustomButton
             title="Use my location"
@@ -86,11 +78,12 @@ export default function LocationPage() {
             <Text style={styles.skipButtonText}>Skip for now</Text>
           </TouchableOpacity>
         </View>
-
       </View>
     </View>
   );
 }
+
+
 
 const styles = StyleSheet.create({
   container: {
