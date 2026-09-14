@@ -44,7 +44,7 @@ export default function LoginScreen() {
     try {
       await signInWithEmailAndPassword(auth, emailOrPhone, password);
       setLoading(false);
-      router.replace('/index');
+      router.replace('/ride/selectAddress');
     } catch (error: any) {
       setLoading(false);
 
