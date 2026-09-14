@@ -1,4 +1,3 @@
-// app/(auth)/registration.tsx
 import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
@@ -20,6 +19,8 @@ import {
 import { doc, setDoc } from 'firebase/firestore';
 
 import { auth, db } from '../../firebase/config';
+import CustomButton from '../../components/CustomButton';
+import IconButton from '../../components/IconButton';
 
 type Gender = 'Male' | 'Female' | 'Other' | '';
 
@@ -34,18 +35,7 @@ export default function RegistrationScreen() {
   const [loading, setLoading] = useState(false);
 
   const handleSignUp = async () => {
-    console.log('Sign Up pressed', {
-      hasAuth: !!auth,
-      hasDb: !!db,
-      name: name.trim(),
-      email: email.trim(),
-      phoneNumber: phoneNumber.trim(),
-      gender,
-      agreeTerms,
-    });
-
     if (!auth || !db) {
-      console.warn('Firebase unavailable - stopping registration flow.');
       Alert.alert('Firebase unavailable', 'Registration is temporarily unavailable because Firebase is not configured.');
       return;
     }
@@ -107,7 +97,6 @@ export default function RegistrationScreen() {
 
         <Text style={styles.title}>Sign up with your email or phone number</Text>
 
-        {/* Nome */}
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Name</Text>
           <TextInput
@@ -118,7 +107,6 @@ export default function RegistrationScreen() {
           />
         </View>
 
-        {/* Email */}
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Email</Text>
           <TextInput
@@ -131,7 +119,6 @@ export default function RegistrationScreen() {
           />
         </View>
 
-        {/* Senha */}
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Password</Text>
           <TextInput
@@ -143,7 +130,6 @@ export default function RegistrationScreen() {
           />
         </View>
 
-        {/* Confirmar Senha */}
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Confirm Password</Text>
           <TextInput
@@ -155,7 +141,6 @@ export default function RegistrationScreen() {
           />
         </View>
 
-        {/* Telefone - SIMPLES */}
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Your mobile number</Text>
           <TextInput
@@ -167,7 +152,6 @@ export default function RegistrationScreen() {
           />
         </View>
 
-        {/* Gênero */}
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Gender</Text>
           <View style={styles.genderContainer}>
@@ -193,7 +177,6 @@ export default function RegistrationScreen() {
           </View>
         </View>
 
-        {/* Termos */}
         <TouchableOpacity
           style={styles.termsContainer}
           onPress={() => setAgreeTerms(!agreeTerms)}
@@ -209,46 +192,39 @@ export default function RegistrationScreen() {
           </Text>
         </TouchableOpacity>
 
-        {/* Botão Sign Up */}
-        <TouchableOpacity
-          style={[styles.signUpButton, loading && styles.buttonDisabled]}
-          onPress={() => {
-            console.log('TouchableOpacity onPress fired');
-            handleSignUp();
-          }}
-          disabled={loading}
-        >
-          {loading ? (
-            <ActivityIndicator color="#fff" />
-          ) : (
-            <Text style={styles.signUpButtonText}>Sign Up</Text>
-          )}
-        </TouchableOpacity>
+        {loading ? (
+          <ActivityIndicator size="large" color="#10b987" style={{ marginVertical: 16 }} />
+        ) : (
+          <CustomButton title="Sign Up" onPress={handleSignUp} variant="primary" />
+        )}
 
-        {/* Divisor */}
         <View style={styles.dividerContainer}>
           <View style={styles.dividerLine} />
           <Text style={styles.dividerText}>or</Text>
           <View style={styles.dividerLine} />
         </View>
 
-        {/* Botões sociais (visuais) */}
         <View style={styles.socialContainer}>
-          <TouchableOpacity style={styles.socialButton}>
-            <Ionicons name="logo-google" size={22} color="#DB4437" />
-            <Text style={styles.socialButtonText}>Sign up with Gmail</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.socialButton}>
-            <Ionicons name="logo-facebook" size={22} color="#1877F2" />
-            <Text style={styles.socialButtonText}>Sign up with Facebook</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.socialButton}>
-            <Ionicons name="logo-apple" size={22} color="#000" />
-            <Text style={styles.socialButtonText}>Sign up with Apple</Text>
-          </TouchableOpacity>
+          <IconButton
+            title="Sign up with Gmail"
+            icon="logo-google"
+            iconColor="#DB4437"
+            onPress={() => Alert.alert('Google', 'Social login coming soon')}
+          />
+          <IconButton
+            title="Sign up with Facebook"
+            icon="logo-facebook"
+            iconColor="#1877F2"
+            onPress={() => Alert.alert('Facebook', 'Social login coming soon')}
+          />
+          <IconButton
+            title="Sign up with Apple"
+            icon="logo-apple"
+            iconColor="#000"
+            onPress={() => Alert.alert('Apple', 'Social login coming soon')}
+          />
         </View>
 
-        {/* Rodapé */}
         <View style={styles.footer}>
           <Text style={styles.footerText}>Already have an account? </Text>
           <TouchableOpacity onPress={() => router.push('/auth/login')}>
@@ -260,7 +236,6 @@ export default function RegistrationScreen() {
   );
 }
 
-// ESTILOS (mantidos, nenhuma alteração necessária)
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff', paddingHorizontal: 24 },
   backButton: { flexDirection: 'row', alignItems: 'center', marginTop: 10, marginBottom: 20 },
@@ -305,31 +280,10 @@ const styles = StyleSheet.create({
   checkboxActive: { backgroundColor: '#10b987', borderColor: '#10b987' },
   termsText: { flex: 1, fontSize: 14, color: '#555', lineHeight: 20 },
   linkText: { color: '#10b987', fontWeight: '500' },
-  signUpButton: {
-    backgroundColor: '#10b987',
-    borderRadius: 30,
-    paddingVertical: 16,
-    alignItems: 'center',
-    marginTop: 8,
-  },
-  buttonDisabled: { opacity: 0.6 },
-  signUpButtonText: { color: '#fff', fontSize: 18, fontWeight: '600' },
   dividerContainer: { flexDirection: 'row', alignItems: 'center', marginVertical: 24 },
   dividerLine: { flex: 1, height: 1, backgroundColor: '#ddd' },
   dividerText: { marginHorizontal: 16, color: '#888', fontSize: 14 },
   socialContainer: { gap: 12 },
-  socialButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 30,
-    paddingVertical: 14,
-    gap: 12,
-    backgroundColor: '#fff',
-  },
-  socialButtonText: { fontSize: 16, fontWeight: '500', color: '#333' },
   footer: { flexDirection: 'row', justifyContent: 'center', marginTop: 24, marginBottom: 40 },
   footerText: { fontSize: 15, color: '#555' },
   footerLink: { fontSize: 15, fontWeight: '600', color: '#10b987' },
