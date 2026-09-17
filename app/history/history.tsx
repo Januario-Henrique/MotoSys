@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import { Text } from "@react-navigation/elements";
 import {
   View,
-  Text,
+  
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,

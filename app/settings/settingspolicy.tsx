@@ -1,8 +1,9 @@
 import React from "react";
+import { Text } from "@react-navigation/elements";
 import {
   SafeAreaView,
   View,
-  Text,
+
   StyleSheet,
   TouchableOpacity,
   ScrollView,

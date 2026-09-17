@@ -1,11 +1,11 @@
 import React, { useMemo, useState } from "react";
+import {Text} from "@react-navigation/elements"
 import {
   Alert,
   Modal,
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
